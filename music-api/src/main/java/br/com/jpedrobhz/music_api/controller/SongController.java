@@ -2,6 +2,7 @@ package br.com.jpedrobhz.music_api.controller;
 
 import br.com.jpedrobhz.music_api.model.Song;
 import br.com.jpedrobhz.music_api.service.SongService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,10 @@ public class SongController {
     private SongService songService;
 
     // GET /api/songs -> Lista todas as músicas
+    // ResponseEntity.ok() envelopa a lista e define o status HTTP para 200 OK
     @GetMapping
     public ResponseEntity<List<Song>> getAllSongs() {
         List<Song> songs = songService.getAllSongs();
-        // ResponseEntity.ok() envelopa a lista e define o status HTTP para 200 OK
         return ResponseEntity.ok(songs);
     }
 
@@ -42,20 +43,22 @@ public class SongController {
 
     // POST /api/songs -> Cadastra uma música nova
     // @RequestBody: Pega o texto JSON que o usuário enviou no corpo da requisição e transforma em um objeto Song.
+    //@valid: Ordena ao spring que valide as regras da classe song antes de executar
     @PostMapping
-    public ResponseEntity<Song> createSong(@RequestBody Song song) {
+    public ResponseEntity<Song> createSong(@Valid @RequestBody Song song) {
         Song savedSong = songService.saveSong(song);
+
         // Retorna o status 201 Created (padrão do mercado para criações com sucesso) com o dado salvo.
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSong);
     }
 
     // DELETE /api/songs/{id} -> Remove uma música do banco
     // ResponseEntity<Void>: O "Void" indica que o corpo da resposta HTTP irá totalmente vazio.
+    // Se foi deletado, devolve o status 204 No Content (Deu certo, mas não há nada para te mostrar)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSong(@PathVariable Long id) {
         boolean deleted = songService.deleteSong(id);
         if (deleted) {
-            // Se foi deletado, devolve o status 204 No Content (Deu certo, mas não há nada para te mostrar)
             return ResponseEntity.noContent().build();
         }
         // Se a música não existia na checagem da service, devolve 404 Not Found
@@ -64,8 +67,9 @@ public class SongController {
 
     // PUT /api/songs/{id} -> Atualiza os dados de uma música existente
     // Recebe o ID na URL para saber QUEM atualizar e o @RequestBody com os dados novos.
+    // @Valid: Garante que os dados novos da atualização também respeitem as regras de preenchimento
     @PutMapping("/{id}")
-    public ResponseEntity<Song> updateSong(@PathVariable Long id, @RequestBody Song song) {
+    public ResponseEntity<Song> updateSong(@PathVariable Long id, @Valid @RequestBody Song song) {
         Optional<Song> updated = songService.updateSong(id, song);
 
         // Mesma lógica do GET por ID: se a service achou a música e atualizou, 200 OK com ela modificada.

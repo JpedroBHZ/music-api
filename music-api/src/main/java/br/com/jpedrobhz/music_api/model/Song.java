@@ -1,6 +1,9 @@
 package br.com.jpedrobhz.music_api.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 import java.util.Objects;
 
 // CLASSE DE DADO: Representa as informações que mudam e têm "prazo de validade" curto.
@@ -13,14 +16,19 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Chave primária gerada automaticamente pelo MySQL (1, 2, 3...)
 
+    //Garante que o titulo não venha nulo, vazio(""), ou cheio de espaços
+    @NotBlank(message = "O título da música e obrigatório")
     @Column(nullable = false)
-    private String title; // Obrigatório no banco
+    private String title;
 
+    //Garante que o nome do artista seja enviado obrigatoriamente
+    @NotBlank(message = "O nome do artista é obrigatório")
     @Column(nullable = false)
-    private String artist; // Obrigatório no banco
+    private String artist;
 
-    private String album; // Opcional (aceita null no banco)
+    private String album; // Continua opcional sem validação restritiva
 
+    @Positive(message = "O ano de lançamento deve ser um número positivo válido")
     private int releaseYear;
 
     // Construtor padrão: Obrigatório para o JPA conseguir ler os dados do banco e converter em Java
