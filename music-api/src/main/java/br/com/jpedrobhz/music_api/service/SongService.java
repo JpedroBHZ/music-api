@@ -8,48 +8,50 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service // Registra esta classe como um componente de serviço no ecossistema do Spring
+@Service
 public class SongService {
 
-    @Autowired // Injeção de dependência automática do Spring para o Repository
+    //Traz a classe, instancia e gerencia pra ti
+    //Nesse caso, pegou a classe abstrata já criada pela interface e deu um start nela
+    @Autowired
     private SongRepository songRepository;
 
-    // Método para listar todas as músicas
-    public List<Song> getAllSongs() {
+    //Esse metodo retorna uma list. O metodo foi criado pela interface
+    //Dica o return será sempre uma List<T>, é só parar o mouse no metodo para confirmar os retornos
+    public List<Song> getAllSongs(){
         return songRepository.findAll();
     }
 
-    // Método para buscar uma música por ID específico
-    public Optional<Song> getSongById(Long id) {
+    //Esse optional, indica que ao buscar o id, pode ou não ser encontrado
+    //Evita que caso seja null, retorne um erro ao ser apontado. É um lembrete para ter cuidado com esse dado
+    public Optional<Song> getSongById(Long id){
         return songRepository.findById(id);
     }
 
-    // Método para salvar uma nova música no banco
     public Song saveSong(Song song) {
         return songRepository.save(song);
     }
 
-    // Método para deletar uma música através do ID
-    public boolean deleteSong(Long id) {
+    //Já que não retorna um metodo, podemos só testar se é null e deletar direto
+    public boolean deleteSong(Long id){
         if (songRepository.existsById(id)) {
             songRepository.deleteById(id);
-            return true; // Retorna verdadeiro se a exclusão deu certo
+            return true;
         }
-        return false; // Retorna falso se a música não existia
+        return false;
     }
 
-    // Método para atualizar uma música existente
-    public Optional<Song> updateSong(Long id, Song updatedSong) {
-        // Buscamos a música no banco pelo ID
-        return songRepository.findById(id).map(existingSong -> {
-            // Se existir, atualizamos os campos com os novos dados que vieram na requisição
-            existingSong.setTitle(updatedSong.getTitle());
-            existingSong.setArtist(updatedSong.getArtist());
-            existingSong.setAlbum(updatedSong.getAlbum());
-            existingSong.setReleaseYear(updatedSong.getReleaseYear());
+    //Esse .map é uma função exclusiva do optional, é basicamente uma estrutura condicinal
+    //Se a musica existia você pega os dados que vieram da internet "updatesong" e substitui pelos antigos "existingsong"
+    public Optional<Song> updateSong(Long id, Song updateSong) {
+        return songRepository.findById(id).map(existingSong ->{
+            existingSong.setTitle(updateSong.getTitle());
+            existingSong.setArtist(updateSong.getArtist());
+            existingSong.setAlbum(updateSong.getAlbum());
+            existingSong.setReleaseYear(updateSong.getReleaseYear());
 
-            // Salvamos as alterações de volta no MySQL
             return songRepository.save(existingSong);
         });
     }
+
 }
