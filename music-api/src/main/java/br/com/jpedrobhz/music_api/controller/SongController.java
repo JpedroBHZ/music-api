@@ -1,5 +1,6 @@
 package br.com.jpedrobhz.music_api.controller;
 
+import br.com.jpedrobhz.music_api.dto.SongDTO;
 import br.com.jpedrobhz.music_api.model.Song;
 import br.com.jpedrobhz.music_api.service.SongService;
 import jakarta.validation.Valid;
@@ -44,9 +45,10 @@ public class SongController {
     // POST /api/songs -> Cadastra uma música nova
     // @RequestBody: Pega o texto JSON que o usuário enviou no corpo da requisição e transforma em um objeto Song.
     //@valid: Ordena ao spring que valide as regras da classe song antes de executar
+    //Passamos o DTO para a service tratar e salvar
     @PostMapping
-    public ResponseEntity<Song> createSong(@Valid @RequestBody Song song) {
-        Song savedSong = songService.saveSong(song);
+    public ResponseEntity<Song> createSong(@Valid @RequestBody SongDTO songDTO) {
+        Song savedSong = songService.saveSong(songDTO);
 
         // Retorna o status 201 Created (padrão do mercado para criações com sucesso) com o dado salvo.
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSong);

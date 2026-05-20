@@ -1,5 +1,6 @@
 package br.com.jpedrobhz.music_api.service;
 
+import br.com.jpedrobhz.music_api.dto.SongDTO;
 import br.com.jpedrobhz.music_api.model.Song;
 import br.com.jpedrobhz.music_api.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,15 @@ public class SongService {
         return songRepository.findById(id);
     }
 
-    public Song saveSong(Song song) {
+    //Convertendo os dados do DTO para a entidade song (que vai para o banco)
+    public Song saveSong(SongDTO dto) {
+        Song song = new Song();
+        song.setTitle(dto.getTitle());
+        song.setArtist(dto.getArtist());
+        song.setAlbum(dto.getAlbum());
+        song.setReleaseYear(dto.getReleaseYear());
+
+        //Agora salvamos a entidade preenchida
         return songRepository.save(song);
     }
 

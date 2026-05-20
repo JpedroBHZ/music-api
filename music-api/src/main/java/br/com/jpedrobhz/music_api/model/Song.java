@@ -16,19 +16,10 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Chave primária gerada automaticamente pelo MySQL (1, 2, 3...)
 
-    //Garante que o titulo não venha nulo, vazio(""), ou cheio de espaços
-    @NotBlank(message = "O título da música e obrigatório")
-    @Column(nullable = false)
+    //Removidas as validações e feitas agora na classe songDTO
     private String title;
-
-    //Garante que o nome do artista seja enviado obrigatoriamente
-    @NotBlank(message = "O nome do artista é obrigatório")
-    @Column(nullable = false)
     private String artist;
-
-    private String album; // Continua opcional sem validação restritiva
-
-    @Positive(message = "O ano de lançamento deve ser um número positivo válido")
+    private String album;
     private int releaseYear;
 
     // Construtor padrão: Obrigatório para o JPA conseguir ler os dados do banco e converter em Java
