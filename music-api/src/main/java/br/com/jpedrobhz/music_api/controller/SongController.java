@@ -6,6 +6,9 @@ import br.com.jpedrobhz.music_api.model.Song;
 import br.com.jpedrobhz.music_api.service.SongService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +29,13 @@ public class SongController {
     // GET /api/songs -> Lista todas as músicas
     // ResponseEntity.ok() envelopa a lista e define o status HTTP para 200 OK
     //O get apenas responde o response (que agora contem o id)
+    // O @PageableDefault define uma configuração padrão caso o usuário não envie nada na URL
     @GetMapping
-    public ResponseEntity<List<SongResponseDTO>> getAllSongs() {
-        List<SongResponseDTO> list = songService.findAllSongs();
-        return ResponseEntity.ok().body(list);
+    public ResponseEntity<Page<SongResponseDTO>> getAllSongs(
+            @PageableDefault(page = 0, size = 10, sort = "title") Pageable pageable) {
+
+        Page<SongResponseDTO> page = songService.findAllSongsPageable(pageable);
+        return ResponseEntity.ok().body(page);
     }
 
     // GET /api/songs/{id} -> Busca uma música específica pela URL

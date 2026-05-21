@@ -5,6 +5,8 @@ import br.com.jpedrobhz.music_api.dto.SongResponseDTO;
 import br.com.jpedrobhz.music_api.model.Song;
 import br.com.jpedrobhz.music_api.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,20 +22,21 @@ public class SongService {
     private SongRepository songRepository;
 
     //Esse metodo retorna uma list. O metodo foi criado pela interface
-    //Dica o return será sempre uma List<T>, é só parar o mouse no metodo para confirmar os retornos
     //Conveterndo lista de entidades para uma lista de dto
-    public List<SongResponseDTO> findAllSongs(){
-        List<Song> songs = songRepository.findAll();
+    // Mudamos o retorno de List para Page, e agora recebemos o objeto Pageable
+    public Page<SongResponseDTO> findAllSongsPageable(Pageable pageable) {
+        // O Repository busca do banco apenas a "fatia" de músicas que foi pedida
+        Page<Song> songsPage = songRepository.findAll(pageable);
 
-        return songs.stream()
-                .map(song -> new SongResponseDTO(
-                        song.getId(),
-                        song.getTitle(),
-                        song.getArtist(),
-                        song.getAlbum(),
-                        song.getReleaseYear()
-                ))
-                .collect(Collectors.toList());
+        // Convertemos a página de Entidades para uma página de DTOs.
+        // objeto Page do Spring já tem um método .map() nativo, não precisa de .stream() e nem de .collect()!
+        return songsPage.map(song -> new SongResponseDTO(
+                song.getId(),
+                song.getTitle(),
+                song.getArtist(),
+                song.getAlbum(),
+                song.getReleaseYear()
+        ));
     }
 
     //Esse optional, indica que ao buscar o id, pode ou não ser encontrado
