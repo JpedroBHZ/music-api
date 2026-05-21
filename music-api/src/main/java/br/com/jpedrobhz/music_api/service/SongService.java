@@ -1,6 +1,7 @@
 package br.com.jpedrobhz.music_api.service;
 
-import br.com.jpedrobhz.music_api.dto.SongDTO;
+import br.com.jpedrobhz.music_api.dto.SongRequestDTO;
+import br.com.jpedrobhz.music_api.dto.SongResponseDTO;
 import br.com.jpedrobhz.music_api.model.Song;
 import br.com.jpedrobhz.music_api.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SongService {
@@ -19,8 +21,19 @@ public class SongService {
 
     //Esse metodo retorna uma list. O metodo foi criado pela interface
     //Dica o return será sempre uma List<T>, é só parar o mouse no metodo para confirmar os retornos
-    public List<Song> getAllSongs(){
-        return songRepository.findAll();
+    //Conveterndo lista de entidades para uma lista de dto
+    public List<SongResponseDTO> findAllSongs(){
+        List<Song> songs = songRepository.findAll();
+
+        return songs.stream()
+                .map(song -> new SongResponseDTO(
+                        song.getId(),
+                        song.getTitle(),
+                        song.getArtist(),
+                        song.getAlbum(),
+                        song.getReleaseYear()
+                ))
+                .collect(Collectors.toList());
     }
 
     //Esse optional, indica que ao buscar o id, pode ou não ser encontrado
@@ -29,16 +42,23 @@ public class SongService {
         return songRepository.findById(id);
     }
 
-    //Convertendo os dados do DTO para a entidade song (que vai para o banco)
-    public Song saveSong(SongDTO dto) {
+    // Método de salvar: recebe o RequestDTO e devolve o ResponseDTO
+    public SongResponseDTO saveSong(SongRequestDTO dto) {
         Song song = new Song();
         song.setTitle(dto.getTitle());
         song.setArtist(dto.getArtist());
         song.setAlbum(dto.getAlbum());
         song.setReleaseYear(dto.getReleaseYear());
 
-        //Agora salvamos a entidade preenchida
-        return songRepository.save(song);
+        Song savedSong = songRepository.save(song);
+
+        return new SongResponseDTO(
+                savedSong.getId(),
+                savedSong.getTitle(),
+                savedSong.getArtist(),
+                savedSong.getAlbum(),
+                savedSong.getReleaseYear()
+        );
     }
 
     //Já que não retorna um metodo, podemos só testar se é null e deletar direto

@@ -35,16 +35,36 @@ public class Song {
     }
 
     // Getters e Setters: Encapsulamento padrão para ler e modificar os dados de forma segura
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-    public String getArtist() { return artist; }
-    public void setArtist(String artist) { this.artist = artist; }
-    public String getAlbum() { return album; }
-    public void setAlbum(String album) { this.album = album; }
-    public int getReleaseYear() { return releaseYear; }
-    public void setReleaseYear(int releaseYear) { this.releaseYear = releaseYear; }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getArtist() {
+        return artist;
+    }
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+    public String getAlbum() {
+        return album;
+    }
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
+    }
 
     // equals: Compara o CONTEÚDO de duas músicas (título, artista, etc.) e não a posição delas na memória
     @Override

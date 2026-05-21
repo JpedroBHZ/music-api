@@ -1,6 +1,7 @@
 package br.com.jpedrobhz.music_api.controller;
 
-import br.com.jpedrobhz.music_api.dto.SongDTO;
+import br.com.jpedrobhz.music_api.dto.SongRequestDTO;
+import br.com.jpedrobhz.music_api.dto.SongResponseDTO;
 import br.com.jpedrobhz.music_api.model.Song;
 import br.com.jpedrobhz.music_api.service.SongService;
 import jakarta.validation.Valid;
@@ -24,10 +25,11 @@ public class SongController {
 
     // GET /api/songs -> Lista todas as músicas
     // ResponseEntity.ok() envelopa a lista e define o status HTTP para 200 OK
+    //O get apenas responde o response (que agora contem o id)
     @GetMapping
-    public ResponseEntity<List<Song>> getAllSongs() {
-        List<Song> songs = songService.getAllSongs();
-        return ResponseEntity.ok(songs);
+    public ResponseEntity<List<SongResponseDTO>> getAllSongs() {
+        List<SongResponseDTO> list = songService.findAllSongs();
+        return ResponseEntity.ok().body(list);
     }
 
     // GET /api/songs/{id} -> Busca uma música específica pela URL
@@ -45,13 +47,12 @@ public class SongController {
     // POST /api/songs -> Cadastra uma música nova
     // @RequestBody: Pega o texto JSON que o usuário enviou no corpo da requisição e transforma em um objeto Song.
     //@valid: Ordena ao spring que valide as regras da classe song antes de executar
-    //Passamos o DTO para a service tratar e salvar
+    // Retorna o status 201 Created (padrão do mercado para criações com sucesso) com o dado salvo.
+    //O post recebe o request e responde o response
     @PostMapping
-    public ResponseEntity<Song> createSong(@Valid @RequestBody SongDTO songDTO) {
-        Song savedSong = songService.saveSong(songDTO);
-
-        // Retorna o status 201 Created (padrão do mercado para criações com sucesso) com o dado salvo.
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedSong);
+    public ResponseEntity<SongResponseDTO> createSong(@Valid @RequestBody SongRequestDTO songRequestDTO) {
+        SongResponseDTO responseDTO = songService.saveSong(songRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
     // DELETE /api/songs/{id} -> Remove uma música do banco

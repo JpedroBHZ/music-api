@@ -3,34 +3,38 @@ package br.com.jpedrobhz.music_api.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
-//DTO que representa os dados de uma musica trafegando pela internet
-//Repare que ele não tem a notação @Entity e nem o campo "id", pois o id e gerado pelo banco
-public class SongDTO {
+/**
+ * DTO (Data Transfer Object) de Entrada.
+ * Usado exclusivamente para receber dados enviados pelo cliente (POST/PUT).
+ * Não possui o campo 'id', pois a responsabilidade de gerar a chave primária é do banco de dados.
+ */
+public class SongRequestDTO {
 
-    //As anotacoes de validacao migram do Model para ca, que e a porta de entrada da internet
-    @NotBlank(message = "O titulo da musica é obrigatorio")
+    // As anotações de validação ficam aqui, blindando a entrada da API
+    @NotBlank(message = "O título da música é obrigatório.")
     private String title;
 
-    @NotBlank(message = "O nome do artista é obrigatório")
+    @NotBlank(message = "O nome do artista é obrigatório.")
     private String artist;
 
     private String album;
 
-    @Positive(message = "O ano de lançamento deve ser um número positivo válido")
+    @Positive(message = "O ano de lançamento deve ser um número positivo válido.")
     private int releaseYear;
 
-    //Construtor padrao (obrigatorio para o spring)
-    public SongDTO() {}
+    // Construtor padrão obrigatório para o Spring/Jackson deserializar o JSON
+    public SongRequestDTO() {
+    }
 
-    //Construtor completo
-    public SongDTO(String title, String artist, String album, int releaseYear) {
+    // Construtor completo para facilitar testes e instanciações manuais
+    public SongRequestDTO(String title, String artist, String album, int releaseYear) {
         this.title = title;
         this.artist = artist;
         this.album = album;
         this.releaseYear = releaseYear;
     }
 
-    //Getters e Setters
+    // Getters e Setters (Necessários para o Spring ler os dados do JSON)
     public String getTitle() {
         return title;
     }

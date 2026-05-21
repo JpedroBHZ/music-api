@@ -24,7 +24,7 @@ public class ControllerExceptionHandler {
         //captura a mensagem real de erro que escrevemos la no Model (ex: "O titulo da musica é obrigatório")
         String errorMessage = e.getBindingResult().getFieldError().getDefaultMessage();
 
-        //Monta o nosso molde de erro customizado coos dados limpos
+        //Monta o nosso molde de erro customizado com dados limpos
         StandardError err = new StandardError(
                 Instant.now(),
                 status.value(),
