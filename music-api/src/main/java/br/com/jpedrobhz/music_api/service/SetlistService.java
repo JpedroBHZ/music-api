@@ -7,8 +7,10 @@ import br.com.jpedrobhz.music_api.model.Setlist;
 import br.com.jpedrobhz.music_api.model.Song;
 import br.com.jpedrobhz.music_api.repository.SetlistRepository;
 import br.com.jpedrobhz.music_api.repository.SongRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,5 +69,35 @@ public class SetlistService {
                 savedSetlist.getEventDate(),
                 songDTOs
         );
+    }
+
+    //Metodo de paginação de setlist
+    @Transactional(readOnly = true) // Boa prática: avisa ao Spring que este método é apenas leitura
+    public Page<SetlistResponseDTO> findAllSetlistsPageable(Pageable pageable) {
+        // 1. Busca a página de entidades puras do banco
+        Page<Setlist> setlistsPage = setlistRepository.findAll(pageable);
+
+        // 2. Transforma a página de Setlist em uma página de SetlistResponseDTO
+        return setlistsPage.map(setlist -> {
+
+            // Dentro de cada Setlist, precisamos converter a sua lista interna de Songs para SongResponseDTO
+            List<SongResponseDTO> songDTOs = setlist.getSongs().stream()
+                    .map(song -> new SongResponseDTO(
+                            song.getId(),
+                            song.getTitle(),
+                            song.getArtist(),
+                            song.getAlbum(),
+                            song.getReleaseYear()
+                    ))
+                    .collect(Collectors.toList());
+
+            // Monta o DTO de saída do Setlist com a sua lista de músicas já convertida
+            return new SetlistResponseDTO(
+                    setlist.getId(),
+                    setlist.getName(),
+                    setlist.getEventDate(),
+                    songDTOs
+            );
+        });
     }
 }
