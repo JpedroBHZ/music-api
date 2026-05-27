@@ -2,25 +2,25 @@ package br.com.jpedrobhz.music_api.dto;
 
 import java.util.List;
 
-// DTO de saida para o setlist
-// Retorna os dados do show e a lista completa de dtos das músicas vinculadas
+// DTO de saída para o setlist limpo e normalizado (3FN)
 public class SetlistResponseDTO {
 
     private Long id;
     private String name;
-
     // Reutilizamos o songResponseDTO para entregar os dados das músicas mastigados
     private List<SongResponseDTO> songs;
 
     public SetlistResponseDTO() {
     }
 
+    // Construtor atualizado apenas com os 3 parâmetros que você usou no Service
     public SetlistResponseDTO(Long id, String name, List<SongResponseDTO> songs) {
         this.id = id;
         this.name = name;
         this.songs = songs;
     }
 
+    // Getters e Setters
     public Long getId() {
         return id;
     }

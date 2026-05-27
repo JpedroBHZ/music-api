@@ -3,6 +3,7 @@ package br.com.jpedrobhz.music_api.service;
 import br.com.jpedrobhz.music_api.dto.SetlistRequestDTO;
 import br.com.jpedrobhz.music_api.dto.SetlistResponseDTO;
 import br.com.jpedrobhz.music_api.dto.SongResponseDTO;
+import br.com.jpedrobhz.music_api.exception.ResourceNotFoundException;
 import br.com.jpedrobhz.music_api.model.Setlist;
 import br.com.jpedrobhz.music_api.model.Song;
 import br.com.jpedrobhz.music_api.repository.SetlistRepository;
@@ -39,7 +40,7 @@ public class SetlistService {
             for(Long songId : dto.getSongIds()) {
                 //Buscamos a música. Se o ID não existir, lançamos um erro usando a nossa estrutura de exceptions!
                 Song song = songRepository.findById(songId)
-                        .orElseThrow(()-> new RuntimeException("Música com ID" + songId + " não encontrada."));
+                        .orElseThrow(() -> new ResourceNotFoundException("Música com ID " + songId + " não encontrada."));
 
                 //Adicionamos a música encontrada na lista do nosso setlist
                 setlist.getSongs().add(song);

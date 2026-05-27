@@ -7,19 +7,19 @@ package br.com.jpedrobhz.music_api.dto;
  */
 public class SongResponseDTO {
 
-    private Long id; // Chave exposta de forma segura apenas para leitura
+    private Long id;
     private String title;
     private String artist;
     private String album;
     private int releaseYear;
-    private int durationInSeconds;
+    private Integer durationInSeconds; // Alterado para Integer para aceitar nulos do banco com segurança
 
     // Construtor padrão necessário para o Spring
     public SongResponseDTO() {
     }
 
     // Construtor completo atualizado
-    public SongResponseDTO(Long id, String title, String artist, String album, int releaseYear, int durationInSeconds) {
+    public SongResponseDTO(Long id, String title, String artist, String album, int releaseYear, Integer durationInSeconds) {
         this.id = id;
         this.title = title;
         this.artist = artist;
@@ -69,11 +69,11 @@ public class SongResponseDTO {
         this.releaseYear = releaseYear;
     }
 
-    public int getDurationInSeconds() {
+    public Integer getDurationInSeconds() {
         return durationInSeconds;
     }
 
-    public void setDurationInSeconds(int durationInSeconds) {
+    public void setDurationInSeconds(Integer durationInSeconds) {
         this.durationInSeconds = durationInSeconds;
     }
 }
