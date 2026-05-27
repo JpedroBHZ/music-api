@@ -68,6 +68,35 @@
 			<version>2.5.0</version>
 		</dependency>
 
+		<!-- Ativa a infraestrutura de segurança do Spring, bloqueando rotas e liberando os recursos de criptografia de senhas (BCrypt). -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- Contém as interfaces e contratos que usamos no código Java para construir e ler as propriedades dos Tokens JWT. -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.5</version>
+		</dependency>
+
+		<!-- Implementação que roda oculta em tempo de execução, responsável pelos algoritmos pesados de criptografia e assinatura digital do token. -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.5</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Ponte que conecta o JWT ao motor Jackson do Spring, permitindo converter os dados do Token de/para o formato JSON. -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.5</version>
+			<scope>runtime</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
