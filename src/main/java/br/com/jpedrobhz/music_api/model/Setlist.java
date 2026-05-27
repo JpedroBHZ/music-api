@@ -36,7 +36,22 @@ public class Setlist {
     public Setlist(Long id, String name, LocalDate eventDate) {
         this.id = id;
         this.name = name;
-        this.eventDate = eventDate;
+    }
+
+    /*
+     O mappedBy = "setlist" avisa ao JPA que o mapeamento principal
+     já foi feito lá no atributo 'setlist' dentro da classe Event.
+    */
+    @OneToOne(mappedBy = "setlist")
+    private Event event;
+
+    // Adicione o Getter e Setter para Event:
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     // Getters e Setters
