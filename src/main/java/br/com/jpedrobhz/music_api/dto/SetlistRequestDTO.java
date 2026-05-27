@@ -13,9 +13,6 @@ public class SetlistRequestDTO {
     @NotBlank(message = "O nome do setlist é obrigatório.")
     private String name;
 
-    @NotNull(message = "A data do evento é obrigatória.")
-    private LocalDate eventDate;
-
     //Recebemos apenas uma liste de IDs ds músicas que farão parte do show
     private List<Long> songIds;
 
@@ -26,7 +23,6 @@ public class SetlistRequestDTO {
 
     public SetlistRequestDTO(String name, LocalDate eventDate, List<Long> songIds) {
         this.name = name;
-        this.eventDate = eventDate;
         this.songIds = songIds;
     }
 
@@ -37,14 +33,6 @@ public class SetlistRequestDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public LocalDate getEventDate() {
-        return eventDate;
-    }
-
-    public void setEventDate(LocalDate eventDate) {
-        this.eventDate = eventDate;
     }
 
     public List<Long> getSongIds() {

@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-//Crie a classe dentro do pacote controller. Ela expõe os endpoints para o Swagger e Postman
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
@@ -25,13 +24,12 @@ public class EventController {
     @PostMapping
     public ResponseEntity<EventResponseDTO> create(@RequestBody @Valid EventRequestDTO dto) {
         EventResponseDTO response = eventService.create(dto);
-        // Retorna o HTTP Status 21 Created quando a entidade é salva com sucesso
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<Page<EventResponseDTO>> findAll(
-            @PageableDefault(size = 10, sort = "date") Pageable pageable) {
+    public ResponseEntity<Page<EventResponseDTO>> getAllEvents(
+            @PageableDefault(size = 10, sort = {"date"}) Pageable pageable) {
         Page<EventResponseDTO> page = eventService.findAll(pageable);
         return ResponseEntity.ok(page);
     }
@@ -39,7 +37,6 @@ public class EventController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         eventService.delete(id);
-        // Retorna o HTTP Status 204 No Content (Deleção feita com sucesso e sem corpo de retorno)
         return ResponseEntity.noContent().build();
     }
 }

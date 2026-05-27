@@ -1,5 +1,6 @@
 package br.com.jpedrobhz.music_api.controller;
 
+import br.com.jpedrobhz.music_api.dto.EventResponseDTO;
 import br.com.jpedrobhz.music_api.dto.SongRequestDTO;
 import br.com.jpedrobhz.music_api.dto.SongResponseDTO;
 import br.com.jpedrobhz.music_api.model.Song;
@@ -32,7 +33,7 @@ public class SongController {
     // O @PageableDefault define uma configuração padrão caso o usuário não envie nada na URL
     @GetMapping
     public ResponseEntity<Page<SongResponseDTO>> getAllSongs(
-            @PageableDefault(page = 0, size = 10, sort = "title") Pageable pageable) {
+            @PageableDefault(size = 10, sort = {"title"}) Pageable pageable) {
 
         Page<SongResponseDTO> page = songService.findAllSongsPageable(pageable);
         return ResponseEntity.ok().body(page);

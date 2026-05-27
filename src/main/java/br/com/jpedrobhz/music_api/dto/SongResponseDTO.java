@@ -2,9 +2,8 @@ package br.com.jpedrobhz.music_api.dto;
 
 /**
  * DTO (Data Transfer Object) de Saída.
+ * Aqui o dado apenas sai moldado para o cliente em formato de leitura pura. Sem anotações de validação
  * Usado para moldar a resposta que enviamos de volta para a internet (GET).
- * Aqui o 'id' é incluído porque o Front-end precisa dele para renderizar botões de ação (Editar/Deletar).
- * Não possui anotações de validação (@NotBlank, etc), pois dados de saída não precisam ser validados.
  */
 public class SongResponseDTO {
 
@@ -13,21 +12,23 @@ public class SongResponseDTO {
     private String artist;
     private String album;
     private int releaseYear;
+    private int durationInSeconds;
 
     // Construtor padrão necessário para o Spring
     public SongResponseDTO() {
     }
 
-    // Construtor completo incluindo o ID para mapear a Entidade do banco para cá
-    public SongResponseDTO(Long id, String title, String artist, String album, int releaseYear) {
+    // Construtor completo atualizado
+    public SongResponseDTO(Long id, String title, String artist, String album, int releaseYear, int durationInSeconds) {
         this.id = id;
         this.title = title;
         this.artist = artist;
         this.album = album;
         this.releaseYear = releaseYear;
+        this.durationInSeconds = durationInSeconds;
     }
 
-    // Getters e Setters (Necessários para o Spring transformar a classe em JSON)
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -66,5 +67,13 @@ public class SongResponseDTO {
 
     public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
+    }
+
+    public int getDurationInSeconds() {
+        return durationInSeconds;
+    }
+
+    public void setDurationInSeconds(int durationInSeconds) {
+        this.durationInSeconds = durationInSeconds;
     }
 }

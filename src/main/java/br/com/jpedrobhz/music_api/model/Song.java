@@ -21,17 +21,19 @@ public class Song {
     private String artist;
     private String album;
     private int releaseYear;
+    private Integer durationInSeconds;
 
     // Construtor padrão: Obrigatório para o JPA conseguir ler os dados do banco e converter em Java
     public Song() {
     }
 
     // Construtor cheio: Facilita a nossa vida na hora de dar "new Song(...)" no código
-    public Song(String title, String artist, String album, int releaseYear) {
+    public Song(String title, String artist, String album, int releaseYear, int durationInSeconds) {
         this.title = title;
         this.artist = artist;
         this.album = album;
         this.releaseYear = releaseYear;
+        this.durationInSeconds = durationInSeconds;
     }
 
     // Getters e Setters: Encapsulamento padrão para ler e modificar os dados de forma segura
@@ -65,17 +67,25 @@ public class Song {
     public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
     }
+    public Integer getDurationInSeconds() {return durationInSeconds;}
+    public void setDurationInSeconds(Integer durationInSeconds) {this.durationInSeconds = durationInSeconds;}
 
     // equals: Compara o CONTEÚDO de duas músicas (título, artista, etc.) e não a posição delas na memória
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (!(o instanceof Song song)) return false;
-        return getReleaseYear() == song.getReleaseYear() && Objects.equals(getId(), song.getId()) && Objects.equals(getTitle(), song.getTitle()) && Objects.equals(getArtist(), song.getArtist()) && Objects.equals(getAlbum(), song.getAlbum());
+        return getReleaseYear() == song.getReleaseYear() &&
+                getDurationInSeconds() == song.getDurationInSeconds() &&
+                Objects.equals(getId(), song.getId()) &&
+                Objects.equals(getTitle(), song.getTitle()) &&
+                Objects.equals(getArtist(), song.getArtist()) &&
+                Objects.equals(getAlbum(), song.getAlbum());
     }
 
     // hashCode: Gera um código numérico único baseado nos dados da música para o Java encontrá-la rápido em coleções
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitle(), getArtist(), getAlbum(), getReleaseYear());
+        return Objects.hash(getId(), getTitle(), getArtist(), getAlbum(), getReleaseYear(), getDurationInSeconds());
     }
 }

@@ -33,7 +33,6 @@ public class SetlistService {
         //Passo 1: Instanciar o nosso modelo Setlist e carregar os dados básico do DTO
         Setlist setlist = new Setlist();
         setlist.setName(dto.getName());
-        setlist.setEventDate(dto.getEventDate());
 
         //Passo 2: Se o cliente enviou IDs de músicas, vamos buscá-las no banco
         if (dto.getSongIds() != null && !dto.getSongIds().isEmpty()) {
@@ -58,7 +57,8 @@ public class SetlistService {
                         song.getTitle(),
                         song.getArtist(),
                         song.getAlbum(),
-                        song.getReleaseYear()
+                        song.getReleaseYear(),
+                        song.getDurationInSeconds() // Adicionado!
                 ))
                 .collect(Collectors.toList());
 
@@ -66,7 +66,6 @@ public class SetlistService {
         return new SetlistResponseDTO(
                 savedSetlist.getId(),
                 savedSetlist.getName(),
-                savedSetlist.getEventDate(),
                 songDTOs
         );
     }
@@ -87,7 +86,8 @@ public class SetlistService {
                             song.getTitle(),
                             song.getArtist(),
                             song.getAlbum(),
-                            song.getReleaseYear()
+                            song.getReleaseYear(),
+                            song.getDurationInSeconds()
                     ))
                     .collect(Collectors.toList());
 
@@ -95,7 +95,6 @@ public class SetlistService {
             return new SetlistResponseDTO(
                     setlist.getId(),
                     setlist.getName(),
-                    setlist.getEventDate(),
                     songDTOs
             );
         });

@@ -35,7 +35,8 @@ public class SongService {
                 song.getTitle(),
                 song.getArtist(),
                 song.getAlbum(),
-                song.getReleaseYear()
+                song.getReleaseYear(),
+                song.getDurationInSeconds()
         ));
     }
 
@@ -52,6 +53,7 @@ public class SongService {
         song.setArtist(dto.getArtist());
         song.setAlbum(dto.getAlbum());
         song.setReleaseYear(dto.getReleaseYear());
+        song.setDurationInSeconds(dto.getDurationInSeconds());
 
         Song savedSong = songRepository.save(song);
 
@@ -60,7 +62,8 @@ public class SongService {
                 savedSong.getTitle(),
                 savedSong.getArtist(),
                 savedSong.getAlbum(),
-                savedSong.getReleaseYear()
+                savedSong.getReleaseYear(),
+                savedSong.getDurationInSeconds()
         );
     }
 
@@ -81,6 +84,7 @@ public class SongService {
             existingSong.setArtist(updateSong.getArtist());
             existingSong.setAlbum(updateSong.getAlbum());
             existingSong.setReleaseYear(updateSong.getReleaseYear());
+            existingSong.setDurationInSeconds(updateSong.getDurationInSeconds());
 
             return songRepository.save(existingSong);
         });

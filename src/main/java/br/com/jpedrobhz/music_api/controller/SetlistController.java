@@ -33,8 +33,7 @@ public class SetlistController {
 
     @GetMapping
     public ResponseEntity<Page<SetlistResponseDTO>> getAllSetlists(
-            @PageableDefault(page = 0, size = 10, sort = "name")Pageable pageable){
-
+            @PageableDefault(page = 0, size = 10, sort = {"name"}) Pageable pageable) {
         Page<SetlistResponseDTO> page = setlistService.findAllSetlistsPageable(pageable);
         return ResponseEntity.ok().body(page);
     }
