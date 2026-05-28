@@ -35,7 +35,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Configuração das regras de acesso às rotas
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        // 👇 LINHA NOVA: Libera os endpoints do OpenAPI/Swagger publicamente
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()    // Qualquer um tenta logar
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Qualquer um se cadastra
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()        // Qualquer um lê músicas/eventos/setlists
@@ -45,7 +47,6 @@ public class SecurityConfig {
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         // Gerenciador de autenticação exigido pelo Spring para processar as tentativas de login

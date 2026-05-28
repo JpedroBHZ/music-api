@@ -24,5 +24,19 @@ services:
     depends_on:
       - postgres-db
 
+  # Adicione o serviço da sua API aqui:
+  api-server:
+    build: .
+    container_name: music-api-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-db
+    environment:
+      # Repare que apontamos para o nome do container do banco: music-postgres-container
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://music-postgres-container:5432/music_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=admin123
+
 volumes:
   postgres_data:
